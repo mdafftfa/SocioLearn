@@ -1,0 +1,29 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: sociolearn-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+    networks:
+      - sociolearn-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    container_name: sociolearn-frontend
+    depends_on:
+      - backend
+    networks:
+      - sociolearn-network
+
+networks:
+  sociolearn-network:
+    driver: bridge
